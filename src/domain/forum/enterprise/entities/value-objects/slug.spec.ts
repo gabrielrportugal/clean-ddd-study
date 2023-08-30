@@ -1,5 +1,5 @@
-import {test, expect} from 'vitest';
-import { Slug } from './slug';
+import { test, expect } from 'vitest'
+import { Slug } from './slug'
 
 test('should be able to creat a new slug from text', () => {
   const slug = Slug.createFromText(' Example question title. -')
