@@ -30,12 +30,10 @@ export class EditQuestionUseCase {
     const question = await this.questionsRepository.findById(questionId)
 
     if (!question) {
-      throw new Error(`Question with id: ${questionId} was not found.`)
       return left(new ResourceNotFoundError())
     }
 
     if (authorId !== question.authorId.toString()) {
-      throw new Error('Not allowed')
       return left(new NotAllowedError())
     }
 
