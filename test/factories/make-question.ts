@@ -9,7 +9,7 @@ import { faker } from '@faker-js/faker'
 export function makeQuestion(
   override: Partial<QuestionProps> = {},
   id?: UniqueEntityId,
-) {
+): Question {
   const question = Question.create(
     {
       authorId: new UniqueEntityId(),

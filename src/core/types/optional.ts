@@ -3,6 +3,7 @@
  *
  * @example
  * ```typescript
+ *
  * type Post {
  *  id: string;
  *  name: string;

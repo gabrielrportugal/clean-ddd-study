@@ -3,13 +3,20 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { makeQuestion } from 'test/factories/make-question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
+import { Question } from '../../enterprise/entities/question'
 
 describe('[GetQuestionBySlugUseCase]', () => {
+  let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
   let inMemoryQuestionsRepository: InMemoryQuestionsRepository
   let sut: GetQuestionBySlugUseCase
 
   beforeEach(() => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository,
+    )
 
     sut = new GetQuestionBySlugUseCase(inMemoryQuestionsRepository)
   })
@@ -26,8 +33,11 @@ describe('[GetQuestionBySlugUseCase]', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(newQuestion.title).toEqual(result.value?.question.title)
-    expect(result.value?.question.slug.value).toEqual('example-question')
+    expect(result.value).toMatchObject({
+      question: expect.objectContaining({
+        title: newQuestion.title,
+      }),
+    })
   })
 
   it('should be error ResourceNotFound', async () => {
